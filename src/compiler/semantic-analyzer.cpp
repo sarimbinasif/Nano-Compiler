@@ -86,10 +86,17 @@ void SemanticAnalyzer::visitBinaryExpr(BinaryExpr* expr) {
         }
     } 
     else if (expr->op.type == TokenType::GREATER || expr->op.type == TokenType::LESS ||
-             expr->op.type == TokenType::EQUAL_EQUAL) {
+             expr->op.type == TokenType::GREATER_EQUAL || expr->op.type == TokenType::LESS_EQUAL ||
+             expr->op.type == TokenType::EQUAL_EQUAL || expr->op.type == TokenType::BANG_EQUAL) {
         // Comparison returns BOOL
-        if (leftType != rightType) {
-             ErrorHandler::error(expr->op.line, "Cannot compare different types.");
+        // Allow comparing int with int, float with float, or int with float
+        if ((leftType == TokenType::TYPE_INT || leftType == TokenType::TYPE_FLOAT) &&
+            (rightType == TokenType::TYPE_INT || rightType == TokenType::TYPE_FLOAT)) {
+            // Numeric comparison is valid
+        } else if (leftType == TokenType::TYPE_BOOL && rightType == TokenType::TYPE_BOOL) {
+            // Bool comparison is valid
+        } else {
+            ErrorHandler::error(expr->op.line, "Cannot compare incompatible types.");
         }
         lastComputedType = TokenType::TYPE_BOOL;
     }
@@ -182,12 +189,13 @@ void SemanticAnalyzer::visitCallExpr(CallExpr* expr) {
     // In a real compiler, SymbolInfo would hold vector<Type> paramTypes.
     
     expr->callee->accept(this); // Check if function name exists
+    TokenType functionReturnType = lastComputedType; // Store the function's return type
     
     // Check arguments
     for (const auto& arg : expr->arguments) {
         arg->accept(this);
     }
     
-    // We assume it returns whatever the symbol says (if we stored it)
-    // For now, let's assume valid
+    // Set the result type to the function's return type
+    lastComputedType = functionReturnType;
 }

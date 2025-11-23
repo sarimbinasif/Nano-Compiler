@@ -1,0 +1,44 @@
+// Test Scanner - Tests lexical analysis
+// This tests: keywords, identifiers, operators, literals, comments
+
+var int x = 42;
+var float y = 3.14;
+var bool flag = true;
+
+// Test operators
+var int result = 10 + 20 - 5 * 2 / 3;
+
+// Test comparison
+var bool comp = x > 5;
+var bool eq = x == 42;
+var bool neq = x != 10;
+
+// Test logical operators
+var bool logic = true and false;
+var bool logicOr = true or false;
+
+// Test negation
+var bool neg = !flag;
+var int negative = -10;
+
+// Test string literal
+var int dummy = 5; // "strings not fully implemented"
+
+// Test parentheses and braces
+func int testFunc(int a, int b) {
+    return a + b;
+}
+
+// Test print
+print(x);
+
+// Test if/else/while
+if (x > 0) {
+    print(1);
+} else {
+    print(0);
+}
+
+while (x > 0) {
+    x = x - 1;
+}

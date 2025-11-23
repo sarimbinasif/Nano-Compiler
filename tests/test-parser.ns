@@ -1,0 +1,75 @@
+// Test Parser - Tests syntax analysis and AST construction
+// This tests: variable declarations, functions, expressions, statements
+
+// Variable declarations
+var int x = 10;
+var float pi = 3.14;
+var bool isValid = true;
+
+// Function declaration
+func int add(int a, int b) {
+    return a + b;
+}
+
+func float multiply(float x, float y) {
+    var float result = x * y;
+    return result;
+}
+
+func bool compare(int a, int b) {
+    return a > b;
+}
+
+// Expressions
+var int expr1 = 5 + 3 * 2;
+var int expr2 = (5 + 3) * 2;
+var bool expr3 = 10 > 5 and 3 < 7;
+var bool expr4 = true or false;
+
+// Assignment
+x = 20;
+x = x + 10;
+
+// If statements
+if (x > 10) {
+    print(x);
+}
+
+if (x > 100) {
+    print(1);
+} else {
+    print(0);
+}
+
+// Nested if
+if (x > 5) {
+    if (x < 50) {
+        print(x);
+    }
+}
+
+// While loops
+var int counter = 0;
+while (counter < 5) {
+    print(counter);
+    counter = counter + 1;
+}
+
+// Function calls
+var int sum = add(10, 20);
+print(sum);
+
+// Block statements
+{
+    var int local = 100;
+    print(local);
+}
+
+// Complex expressions
+var int complex = ((10 + 5) * 2 - 3) / 4;
+var bool complexBool = (x > 10) and (pi < 20.0);
+
+// Return statement
+func int getValue() {
+    return 42;
+}

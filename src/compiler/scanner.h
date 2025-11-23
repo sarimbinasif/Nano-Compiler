@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 #include <map>
-#include "../Data/Token.h"
+#include "../data/token.h"
 
 class Scanner {
 private:

@@ -24,26 +24,12 @@ Statement* Parser::declaration() {
 }
 
 Statement* Parser::funcDeclaration(std::string kind) {
-    Token returnType = consume(TokenType::TYPE_INT, "Expected return type (int/float/bool) before function name."); 
-    // Note: For simplicity, assume int return type or you can check for others. 
-    // In a real parser, check(TokenType::TYPE_INT) || check(TokenType::TYPE_FLOAT)...
-    // Let's patch to allow any type:
-    if (previous().type != TokenType::TYPE_INT && previous().type != TokenType::TYPE_FLOAT && previous().type != TokenType::TYPE_BOOL) {
-         // If consume failed, we already threw, but for "OR" logic:
-         // This is a simplified check.
-    }
-    
-    // Actually, let's look at the previous token if we matched one, but match() advances.
-    // Let's redo:
-    // func int add ...
-    // 'func' is consumed. Next should be TYPE.
-    
-    // Correct logic for type parsing:
+    // Parse return type: func int/float/bool name(...)
     Token typeToken = peek();
     if (match({TokenType::TYPE_INT, TokenType::TYPE_FLOAT, TokenType::TYPE_BOOL})) {
         typeToken = previous();
     } else {
-        throw std::runtime_error("Expected return type.");
+        throw std::runtime_error("Expected return type (int/float/bool) before function name.");
     }
 
     Token name = consume(TokenType::IDENTIFIER, "Expect " + kind + " name.");

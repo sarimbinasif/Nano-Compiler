@@ -1,0 +1,96 @@
+// Test Semantic Analysis - Tests type checking and scope rules
+// This should pass all semantic checks
+
+// Basic variable declarations with type matching
+var int x = 10;
+var float y = 3.14;
+var bool flag = true;
+
+// Type-safe operations
+var int sum = x + 5;
+var float product = y * 2.0;
+var bool result = flag and true;
+
+// Scoping test - different scopes, same name
+{
+    var int local = 100;
+    print(local);
+}
+{
+    var int local = 200;
+    print(local);
+}
+
+// Function with proper return type
+func int calculate(int a, int b) {
+    var int temp = a + b;
+    return temp;
+}
+
+func bool isPositive(int num) {
+    return num > 0;
+}
+
+func float divide(float a, float b) {
+    return a / b;
+}
+
+// Variable usage after declaration
+var int value = 50;
+value = value + 10;
+print(value);
+
+// Proper conditionals (boolean expressions)
+if (x > 5) {
+    print(1);
+}
+
+if (flag) {
+    print(1);
+} else {
+    print(0);
+}
+
+while (x > 0) {
+    x = x - 1;
+}
+
+// Function calls
+var int funcResult = calculate(10, 20);
+var bool checkResult = isPositive(funcResult);
+
+// Nested scopes with shadowing
+var int outer = 10;
+{
+    var int inner = 20;
+    {
+        var int deeper = 30;
+        print(deeper);
+    }
+    print(inner);
+}
+print(outer);
+
+// Type conversions (int to float is allowed)
+var float converted = 10;
+
+// Comparison operations (return bool)
+var bool comp1 = x > y;
+var bool comp2 = x == 10;
+
+// Logical operations
+var bool logic1 = true and false;
+var bool logic2 = comp1 or comp2;
+
+// Unary operations
+var int negativeNum = -42;
+var bool notFlag = !flag;
+
+// Assignment type matching
+x = 100;
+y = 3.5;
+flag = false;
+
+// Expression statements
+calculate(5, 10);
+print(x);

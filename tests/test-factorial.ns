@@ -1,0 +1,13 @@
+// Factorial example from proposal
+var int N = 5;
+
+func int factorial(int n) {
+    if (n == 0) {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+
+var int fact_N = factorial(N);
+print(fact_N);
