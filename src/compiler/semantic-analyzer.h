@@ -1,48 +1,39 @@
 #pragma once
-
 #include "../data/AST.h"
 #include "../util/symbol-table.h"
-#include <iostream>
 
 class SemanticAnalyzer : public ASTVisitor {
 private:
     SymbolTable symbolTable;
-    // You'll need an ErrorHandler class here
+    TokenType currentFunctionReturnType;
+    bool inFunction = false;
+
+    // Helper to map generic tokens to types if needed
+    TokenType getResultType(TokenType t1, TokenType t2, TokenType op);
 
 public:
-    // This is the main function you call
-    void analyze(const std::vector<std::unique_ptr<Statement>>& statements) {
-        for (const auto& stmt : statements) {
-            stmt->accept(this);
-        }
-    }
+    void analyze(const std::vector<std::unique_ptr<Statement>>& statements);
 
-    // --- Visitor Methods ---
-    void visitVarDeclStmt(VarDeclStmt* stmt) override {
-        // 1. Check if 'stmt->name' is already in 'symbolTable'
-        // 2. If not, add it to 'symbolTable' with its type
-        // 3. Analyze the initializer: stmt->initializer->accept(this)
-        std::cout << "Semantically checking var " << stmt->name.lexeme << std::endl;
-    }
+    // Visit methods
+    void visitBlockStmt(BlockStmt* stmt) override;
+    void visitVarStmt(VarStmt* stmt) override;
+    void visitVariableExpr(VariableExpr* expr) override;
+    void visitAssignExpr(AssignExpr* expr) override;
+    void visitBinaryExpr(BinaryExpr* expr) override;
+    
+    // Minimal implementations for others to satisfy interface
+    void visitGroupingExpr(GroupingExpr* expr) override;
+    void visitLiteralExpr(LiteralExpr* expr) override;
+    void visitUnaryExpr(UnaryExpr* expr) override;
+    void visitCallExpr(CallExpr* expr) override;
+    void visitExpressionStmt(ExpressionStmt* stmt) override;
+    void visitFunctionStmt(FunctionStmt* stmt) override;
+    void visitIfStmt(IfStmt* stmt) override;
+    void visitPrintStmt(PrintStmt* stmt) override;
+    void visitReturnStmt(ReturnStmt* stmt) override;
+    void visitWhileStmt(WhileStmt* stmt) override;
 
-    void visitBinaryExpr(BinaryExpr* expr) override {
-        // 1. Get type of left: expr->left->accept(this)
-        // 2. Get type of right: expr->right->accept(this)
-        // 3. Check if 'expr->op' is valid for those two types
-        //    (e.g., error if you try to "int" * "bool")
-        std::cout << "Semantically checking a binary expression" << std::endl;
-    }
-
-    void visitLiteralExpr(LiteralExpr* expr) override {
-        // Base case: just note its type (e.g., "10" is int)
-    }
-
-    void visitIfStmt(IfStmt* stmt) override {
-        // 1. Analyze the condition: stmt->condition->accept(this)
-        // 2. Check if the resulting type of the condition is a 'bool'
-        // 3. Analyze the 'then' branch: stmt->thenBranch->accept(this)
-        // 4. (If it exists) Analyze the 'else' branch
-    }
-
-    // ... etc. for all other visit methods
+    // We need a way to store the "Type" of the last evaluated expression
+    // to check against expected types.
+    TokenType lastComputedType; 
 };
